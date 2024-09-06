@@ -5,8 +5,8 @@ runs:
   using: "node20"
   main: "dist/index.js"
 branding:
-  color: "blue"
-  icon: "gift"
+  color: "orange"
+  icon: "message-circle"
   name: "Code Review Bot"
 inputs:
   github-token:
