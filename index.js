@@ -107,7 +107,7 @@ async function getReviewMessage(anthropic, filename, fileContent) {
     messages: [
       {
         role: "user",
-        content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. Please use the PN rule in code reviews: P1 (must fix), P2 (strongly consider), P3 (preferably fix), P4 (optional), P5 (minor suggestion) \n\nFile Name:Please review the following file and provide suggestions for improvement.\n\nFile Name:  ${filename}\n\nFile Content:\n\n${fileContent}`,
+        content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name:Please review the following file and provide suggestions for improvement.\n\nFile Name:  ${filename}\n\nFile Content:\n\n${fileContent}`,
       },
     ],
   });
