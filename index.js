@@ -121,7 +121,7 @@ async function postReviewComment(octokit, owner, repo, pullRequestNumber, file, 
     owner,
     repo,
     issue_number: pullRequestNumber,
-    body: reviewMessage,
+    body: `review file: ${file.filename}\n\n${reviewMessage}`,
   });
   core.info(`Comment posted for file: ${file.filename}`); // 디버깅 구문
 }
