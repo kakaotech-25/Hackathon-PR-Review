@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 const Anthropic = require("@anthropic-ai/sdk");
+const llama = require("./llama");
 
 async function app() {
   try {
@@ -89,7 +90,8 @@ async function reviewFile(anthropic, octokit, owner, repo, pullRequestNumber, fi
   core.info(`file content: ${fileContent}`);
 
   // 리뷰를 요청
-  const reviewMessage = await getReviewMessage(anthropic, file.filename, fileContent);
+  // const reviewMessage = await getReviewMessage(anthropic, file.filename, fileContent);
+  const reviewMessage = await llama(file.filename, fileContent);
   core.info(`Review message received for ${file.filename}`);
 
   // 리뷰 코멘트를 PR에 게시

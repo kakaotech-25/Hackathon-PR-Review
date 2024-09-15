@@ -1,6 +1,57 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 5928:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "llama": () => (/* binding */ llama)
+/* harmony export */ });
+/* harmony import */ var _azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5500);
+/* harmony import */ var _azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _azure_core_auth__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9302);
+/* harmony import */ var _azure_core_auth__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_azure_core_auth__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+const token = process.env["GITHUB_TOKEN"];
+const endpoint = "https://models.inference.ai.azure.com";
+const modelName = "meta-llama-3.1-405b-instruct";
+
+async function llama(filename, fileContent) {
+  const client = new (_azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0___default())(endpoint, new _azure_core_auth__WEBPACK_IMPORTED_MODULE_1__.AzureKeyCredential(token));
+
+  const response = await client.path("/chat/completions").post({
+    body: {
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
+        {
+          role: "user",
+          content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name:Please review the following file and provide suggestions for improvement.\n\nFile Name:  ${filename}\n\nFile Content:\n\n${fileContent}`,
+        },
+      ],
+      model: modelName,
+      temperature: 0,
+      max_tokens: 1000,
+      top_p: 1.0,
+    },
+  });
+
+  if (response.status !== "200") {
+    throw response.body.error;
+  }
+  return response.body.choices[0].message.content;
+}
+
+llama().catch((err) => {
+  console.error("The sample encountered an error:", err);
+});
+
+
+/***/ }),
+
 /***/ 4266:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -34915,6 +34966,22 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 5500:
+/***/ ((module) => {
+
+module.exports = eval("require")("@azure-rest/ai-inference");
+
+
+/***/ }),
+
+/***/ 9302:
+/***/ ((module) => {
+
+module.exports = eval("require")("@azure/core-auth");
+
+
+/***/ }),
+
 /***/ 9685:
 /***/ ((module) => {
 
@@ -41250,6 +41317,46 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
@@ -41261,6 +41368,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7883);
 const github = __nccwpck_require__(828);
 const Anthropic = __nccwpck_require__(7588);
+const llama = __nccwpck_require__(5928);
 
 async function app() {
   try {
@@ -41349,7 +41457,8 @@ async function reviewFile(anthropic, octokit, owner, repo, pullRequestNumber, fi
   core.info(`file content: ${fileContent}`);
 
   // 리뷰를 요청
-  const reviewMessage = await getReviewMessage(anthropic, file.filename, fileContent);
+  // const reviewMessage = await getReviewMessage(anthropic, file.filename, fileContent);
+  const reviewMessage = await llama(file.filename, fileContent);
   core.info(`Review message received for ${file.filename}`);
 
   // 리뷰 코멘트를 PR에 게시
@@ -41367,7 +41476,7 @@ async function getReviewMessage(anthropic, filename, fileContent) {
     messages: [
       {
         role: "user",
-        content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. Please use the PN rule in code reviews: P1 (must fix), P2 (strongly consider), P3 (preferably fix), P4 (optional), P5 (minor suggestion) \n\nFile Name:Please review the following file and provide suggestions for improvement.\n\nFile Name:  ${filename}\n\nFile Content:\n\n${fileContent}`,
+        content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name:Please review the following file and provide suggestions for improvement.\n\nFile Name:  ${filename}\n\nFile Content:\n\n${fileContent}`,
       },
     ],
   });
