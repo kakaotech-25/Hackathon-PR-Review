@@ -9,19 +9,16 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "llama": () => (/* binding */ llama)
 /* harmony export */ });
-/* harmony import */ var _azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5500);
-/* harmony import */ var _azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _azure_core_auth__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9302);
-/* harmony import */ var _azure_core_auth__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_azure_core_auth__WEBPACK_IMPORTED_MODULE_1__);
+const ModelClient = __nccwpck_require__(5500);
+const { AzureKeyCredential } = __nccwpck_require__(9302);
+const core = __nccwpck_require__(7883);
 
-
-
-const token = process.env["GITHUB_TOKEN"];
+const token = core.getInput("github-token") || process.env.GITHUB_TOKEN;
 const endpoint = "https://models.inference.ai.azure.com";
 const modelName = "meta-llama-3.1-405b-instruct";
 
 async function llama(filename, fileContent) {
-  const client = new (_azure_rest_ai_inference__WEBPACK_IMPORTED_MODULE_0___default())(endpoint, new _azure_core_auth__WEBPACK_IMPORTED_MODULE_1__.AzureKeyCredential(token));
+  const client = new ModelClient(endpoint, new AzureKeyCredential(token));
 
   const response = await client.path("/chat/completions").post({
     body: {
@@ -41317,18 +41314,6 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

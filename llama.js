@@ -1,7 +1,8 @@
-import ModelClient from "@azure-rest/ai-inference";
-import { AzureKeyCredential } from "@azure/core-auth";
+const ModelClient = require("@azure-rest/ai-inference");
+const { AzureKeyCredential } = require("@azure/core-auth");
+const core = require("@actions/core");
 
-const token = process.env["GITHUB_TOKEN"];
+const token = core.getInput("github-token") || process.env.GITHUB_TOKEN;
 const endpoint = "https://models.inference.ai.azure.com";
 const modelName = "meta-llama-3.1-405b-instruct";
 
