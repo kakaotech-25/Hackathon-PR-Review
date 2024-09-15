@@ -1,59 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 5928:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const ModelClient = __nccwpck_require__(8315);
-const { AzureKeyCredential } = __nccwpck_require__(2382);
-const core = __nccwpck_require__(7883);
-
-const token = core.getInput("github-token") || process.env.GITHUB_TOKEN;
-const endpoint = "https://models.inference.ai.azure.com";
-const modelName = "meta-llama-3.1-405b-instruct";
-
-async function llama(filename, fileContent) {
-  const client = new ModelClient(endpoint, new AzureKeyCredential(token));
-
-  const response = await client.path("/chat/completions").post({
-    body: {
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        {
-          role: "user",
-          content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name: ${filename}\n\nFile Content:\n\n${fileContent}`,
-        },
-      ],
-      model: modelName,
-      temperature: 0,
-      max_tokens: 1000,
-      top_p: 1.0,
-    },
-  });
-
-  // 응답 상태 코드 확인
-  if (response.status !== 200) {
-    throw new Error(response.body.error || "Request failed");
-  }
-
-  return response.body.choices[0].message.content;
-}
-
-// 모듈을 CommonJS 방식으로 내보내기
-module.exports = llama;
-
-// llama() 함수는 인자를 받아서 호출해야 함
-llama("example.txt", "Example file content")
-  .then((result) => {
-    console.log("Review result:", result);
-  })
-  .catch((err) => {
-    console.error("The sample encountered an error:", err);
-  });
-
-
-/***/ }),
-
 /***/ 4266:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -48861,6 +48808,50 @@ exports["default"] = isPlainObject;
 
 /***/ }),
 
+/***/ 2581:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const ModelClient = __nccwpck_require__(8315);
+const { AzureKeyCredential } = __nccwpck_require__(2382);
+const core = __nccwpck_require__(7883);
+
+const token = core.getInput("github-token") || process.env.GITHUB_TOKEN;
+const endpoint = "https://models.inference.ai.azure.com";
+const modelName = "meta-llama-3.1-405b-instruct";
+
+async function llama(filename, fileContent) {
+  const client = new ModelClient(endpoint, new AzureKeyCredential(token));
+
+  const response = await client.path("/chat/completions").post({
+    body: {
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
+        {
+          role: "user",
+          content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name: ${filename}\n\nFile Content:\n\n${fileContent}`,
+        },
+      ],
+      model: modelName,
+      temperature: 0,
+      max_tokens: 1000,
+      top_p: 1.0,
+    },
+  });
+
+  // 응답 상태 코드 확인
+  if (response.status !== 200) {
+    throw new Error(response.body.error || "Request failed");
+  }
+
+  return response.body.choices[0].message.content;
+}
+
+// 모듈을 CommonJS 방식으로 내보내기
+module.exports = llama;
+
+
+/***/ }),
+
 /***/ 1229:
 /***/ ((module) => {
 
@@ -48913,7 +48904,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7883);
 const github = __nccwpck_require__(828);
 const Anthropic = __nccwpck_require__(7588);
-const llama = __nccwpck_require__(5928);
+const llama = __nccwpck_require__(2581);
 
 async function app() {
   try {

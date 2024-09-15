@@ -1,7 +1,7 @@
-import core from "@actions/core";
-import github from "@actions/github";
-import Anthropic from "@anthropic-ai/sdk";
-import llama from "./llama";
+const core = require("@actions/core");
+const github = require("@actions/github");
+const Anthropic = require("@anthropic-ai/sdk");
+const llama = require("./llama.cjs");
 
 async function app() {
   try {
