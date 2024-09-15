@@ -12,14 +12,14 @@ async function llama(filename, fileContent) {
   const response = await client.path("/chat/completions").post({
     body: {
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
+        { role: "system", content: "You are a code review assistant." },
         {
           role: "user",
           content: `Please review the following file and provide suggestions for improvement. Advice should be no more than 5 lines and 100 characters. p: Starts with a rating of the strength of the review from 1 to 5, where 1 is strong and 5 is weak. \n\nFile Name: ${filename}\n\nFile Content:\n\n${fileContent}`,
         },
       ],
       model: modelName,
-      temperature: 0,
+      temperature: 1.0,
       max_tokens: 1000,
       top_p: 1.0,
     },
