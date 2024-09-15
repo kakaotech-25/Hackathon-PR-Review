@@ -47167,11 +47167,7 @@ async function llama(filename, fileContent) {
     },
   });
 
-  // 응답 상태 코드 확인
-  if (response.status !== 200) {
-    throw new Error(response.body.error || "Request failed");
-  }
-
+  core.info("review message :", response.body);
   return response.body.choices[0].message.content;
 }
 
