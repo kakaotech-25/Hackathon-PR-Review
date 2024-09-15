@@ -1,6 +1,6 @@
-const ModelClient = require("@azure-rest/ai-inference");
-const { AzureKeyCredential } = require("@azure/core-auth");
-const core = require("@actions/core");
+import ModelClient from "@azure-rest/ai-inference";
+import { AzureKeyCredential } from "@azure/core-auth";
+import core from "@actions/core";
 
 const token = core.getInput("github-token") || process.env.GITHUB_TOKEN;
 const endpoint = "https://models.inference.ai.azure.com";
