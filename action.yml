@@ -3,7 +3,7 @@ description: "A bot that performs code reviews"
 author: "JaeJunday"
 runs:
   using: "node20"
-  main: "dist/index.js"
+  main: "dist/index.cjs"
 branding:
   color: "orange"
   icon: "message-circle"
